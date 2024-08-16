@@ -183,21 +183,17 @@
         </fieldset>
     </form>
 
-    <div id="successMessage" class="hidden success-message">
-        Success! Your form has been submitted.
-    </div>
+   <!-- Success message -->
+        <div class="success-message" id="success-message">
+            Thank you for submitting the form!
+        </div>
+    </form>
 
     <script>
-        // JavaScript to show the success message
-        document.getElementById("form").onsubmit = function(event) {
-            event.preventDefault(); // Prevent the form from actually submitting
-
-            // Show the success message
-            document.getElementById("successMessage").classList.remove("hidden");
-
-            // Clear the form fields
-            document.getElementById("form").reset();
-        };
+        function showSuccessMessage(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            document.getElementById('success-message').style.display = 'block'; // Show the success message
+        }
     </script>  
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </div>
