@@ -4,61 +4,110 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Train ticket generation</title>
+  <title>Your Ticket</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-    body{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: url('https://images.unsplash.com/photo-1615864691387-6e986695017a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG9nd2FydHMlMjBleHByZXNzfGVufDB8fDB8fA%3D%3D&w=1000&q=80');
-      background-size:cover;
+    /* Your existing styles */
+    body {
+      background: #f2f2f2;
+      font-family: "Questrial", sans-serif;
     }
-    input{
-      display: block;
-      align-items: center;
-      width:20vw;
-      padding: 2vh 5vw;
-      margin: 3vh 0;
-      text-align: center;
-      
-      border-radius: 5px;
-    }
-
-    .submit{
-      display: block;
-      width: 30.2vw;
-      margin: 5vh 0;
-      padding: 2vh 5vw;
-      font-family: "Poppins";
-      color: white;
-      background-color: brown;
-    }
-
-    p{
-      font-family: "Poppins";
-      font-size: larger;
-      font-weight: bold;
-      padding-top: 2vh;
-      color: white;
-    }
+    /* Add your other CSS code here */
   </style>
 </head>
 <body>
-  <p> TICKET GENERATOR</p>
-  <form method="post" action="/ticket">
-    {% csrf_token %}
-    <input type="text" name="start-station" placeholder="Enter Code of Starting Station" />
-    <input type="text" name="leaving-station" placeholder="Enter Code of Leaving Station" />
-    <input type="text" name="name" placeholder="Enter Name"/>
-    <input type="text" name="coach" placeholder="Enter Coach"/>
-    <input type="text" name="seat-number" placeholder="Enter Seat Number"/>
-    <input type="date" name="date" placeholder="Enter Date"/>
-    <input type="time" name="time" placeholder="Enter Time"/>
+  <div class="main-content">
+    <h2>Fill in your details to generate the ticket:</h2>
+    <form id="ticketForm">
+      <label for="name">Passenger Name:</label>
+      <input type="text" id="name" name="name" required><br><br>
 
-    <button type="submit" class="submit">Submit</button>
-    
-  </form>
+      <label for="start_station">Departure Station:</label>
+      <input type="text" id="start_station" name="start_station" required><br><br>
+
+      <label for="end_station">Arrival Station:</label>
+      <input type="text" id="end_station" name="end_station" required><br><br>
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required><br><br>
+
+      <label for="time">Time:</label>
+      <input type="time" id="time" name="time" required><br><br>
+
+      <label for="coach">Coach:</label>
+      <input type="text" id="coach" name="coach" required><br><br>
+
+      <button type="button" onclick="generateTicket()">Generate Ticket</button>
+    </form>
+
+    <!-- The ticket preview -->
+    <div id="ticket" class="ticket" style="margin-top: 20px;">
+      <div class="ticket__main">
+        <div class="header">Hogwarts Express</div>
+        <div class="info passenger">
+          <div class="info__item">Passenger</div>
+          <div class="info__detail" id="ticketName">John Doe</div>
+        </div>
+        <div class="info platform"> <span>Depart</span><span>from</span><span>platform</span>
+          <div class="number">
+            <div>9</div>
+            <div><span>3</span><span>4</span></div>
+          </div>
+        </div>
+        <div class="info departure">
+          <div class="info__item">Depart</div>
+          <div class="info__detail" id="ticketStartStation">King's Cross</div>
+        </div>
+        <div class="info arrival">
+          <div class="info__item">Arrive</div>
+          <div class="info__detail" id="ticketEndStation">Hogsmeade</div>
+        </div>    
+        <div class="info date">
+          <div class="info__item">Date</div>
+          <div class="info__detail" id="ticketDate">2024-09-01</div>
+        </div>
+        <div class="info time">
+          <div class="info__item">Time</div>
+          <div class="info__detail" id="ticketTime">10:00 AM</div>
+        </div>
+        <div class="info carriage">
+          <div class="info__item">car</div>
+          <div class="info__detail" id="ticketCoach">1</div>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="downloadTicket()">Download Ticket</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    function generateTicket() {
+      // Get form values
+      const name = document.getElementById('name').value;
+      const startStation = document.getElementById('start_station').value;
+      const endStation = document.getElementById('end_station').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const coach = document.getElementById('coach').value;
+
+      // Update the ticket with form values
+      document.getElementById('ticketName').innerText = name;
+      document.getElementById('ticketStartStation').innerText = startStation;
+      document.getElementById('ticketEndStation').innerText = endStation;
+      document.getElementById('ticketDate').innerText = date;
+      document.getElementById('ticketTime').innerText = time;
+      document.getElementById('ticketCoach').innerText = coach;
+    }
+
+    function downloadTicket() {
+      // Use html2canvas to capture the ticket
+      html2canvas(document.querySelector("#ticket")).then(canvas => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL("image/png");
+        link.download = 'ticket.png';
+        link.click();
+      });
+    }
+  </script>
 </body>
 </html>
