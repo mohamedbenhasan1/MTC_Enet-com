@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <title>Your Ticket</title>
   <style>
     body {
@@ -303,6 +304,24 @@ footer a .icons {
             document.getElementById("outputEmail").textContent = email;
             document.getElementById("outputAge").textContent = age;
         }
+        function downloadDivAsPDF() {
+            // Get the content of the div
+            var content = document.getElementById("content").innerHTML;
+
+            // Create a jsPDF instance
+            var { jsPDF } = window.jspdf;
+            var doc = new jsPDF();
+
+            // Add the content to the PDF
+            doc.html(document.getElementById("content"), {
+                callback: function (doc) {
+                    // Save the generated PDF
+                    doc.save("div-content.pdf");
+                },
+                x: 10,
+                y: 10
+            });
+        }
     </script>
 </head>
 <body>
@@ -324,7 +343,7 @@ footer a .icons {
     </form>
 
 
-  <div class="main-content">
+  <div class="main-content" id="content">
   <div class="ticket">
     <div class="ticket__main">
       <div class="header">MTC_Enet'Com</div>
@@ -342,9 +361,9 @@ footer a .icons {
         <div class="info__item">Location</div>
         <div class="info__detail">Enet'Com</div>
       </div>
-      <div class="info arrival" id="output">
+      <div class="info arrival">
         <div class="info__item">Member</div>
-        <div class="info__detail"><span id="outputName"></span></div>
+        <div class="info__detail" id="output"><span id="outputName"></span></div>
       </div>    
       <div class="info date">
         <div class="info__item">Date</div>
@@ -387,9 +406,9 @@ footer a .icons {
         <div class="info__item">Location</div>
         <div class="info__detail">Enetcom</div>
       </div>
-      <div class="info side-depart" id="output">
+      <div class="info side-depart">
         <div class="info__item">Member</div>
-        <div class="info__detail"><span id="outputName"></span></div>
+        <div class="info__detail" id="output"><span id="outputName"></span></div>
       </div>
       <div class="info side-date">
         <div class="info__item">Date</div>
@@ -406,6 +425,8 @@ footer a .icons {
     </div>
   </div>
 </div>
-
+<div>
+<button onclick="downloadDivAsPDF()">Download PDF</button>
+</div>
 </body>
 </html>
